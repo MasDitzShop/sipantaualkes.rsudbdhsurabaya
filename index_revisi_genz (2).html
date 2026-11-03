@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1b1050">
+<title>SIPANTAU ALKES | RSUD Bhakti Dharma Husada Surabaya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --navy:#0b2545;--blue:#1565c0;--blue2:#1976d2;--sky:#eaf3ff;--bg:#f5f8fc;
+ --white:#fff;--ink:#172b4d;--muted:#64748b;--line:#e2e8f0;
+ --red:#dc2626;--yellow:#d69e00;--green:#16a34a;--shadow:0 8px 28px rgba(20,50,90,.08);
+ --radius:16px
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+.app{min-height:100vh;display:flex}
+.sidebar{width:250px;background:var(--navy);color:#d9e8f7;position:fixed;inset:0 auto 0 0;padding:22px 15px;z-index:20;display:flex;flex-direction:column;transition:.25s}
+.brand{display:flex;gap:11px;align-items:center;padding:4px 9px 25px;border-bottom:1px solid #ffffff20}
+.brand-icon{width:42px;height:42px;border-radius:13px;background:#fff;color:var(--blue);display:grid;place-items:center;font-size:22px;font-weight:900}
+.brand strong{display:block;color:#fff;font-size:15px;letter-spacing:.4px}.brand small{font-size:10px;color:#a9c4df}
+.nav-label{font-size:10px;text-transform:uppercase;letter-spacing:1.3px;color:#8ba8c6;margin:24px 10px 9px}
+.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;color:#c9d9e9;text-align:left;padding:11px 12px;border-radius:10px;display:flex;align-items:center;gap:12px;font-size:13px}
+.nav button:hover,.nav button.active{background:#1976d2;color:#fff}.nav .ico{width:19px;text-align:center;font-size:16px}
+.sidebar-bottom{margin-top:auto;border-top:1px solid #ffffff20;padding:16px 10px 0;font-size:11px;color:#91abc5;line-height:1.7}
+.main{margin-left:250px;width:calc(100% - 250px);min-height:100vh}
+.topbar{height:68px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:10}
+.top-left{display:flex;align-items:center;gap:14px}.hamb{border:0;background:transparent;font-size:22px;color:var(--ink);display:none}
+.crumb{font-size:13px;color:var(--muted)}.top-actions{display:flex;align-items:center;gap:12px}
+.role-select{border:1px solid var(--line);border-radius:9px;padding:8px 10px;color:var(--ink);background:#fff;font-size:12px}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--sky);color:var(--blue);display:grid;place-items:center;font-weight:800;font-size:12px}
+.content{padding:28px 30px 45px;max-width:1500px;margin:auto}
+.page{display:none;animation:fade .2s ease}.page.active{display:block}@keyframes fade{from{opacity:.5;transform:translateY(4px)}to{opacity:1;transform:none}}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:22px}
+.eyebrow{color:var(--blue);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px}
+h1{font-size:27px;line-height:1.2;margin:6px 0 8px;letter-spacing:-.7px}h2{font-size:18px;margin:0 0 14px}h3{font-size:14px;margin:0 0 8px}
+.subtitle{color:var(--muted);font-size:13px;line-height:1.7;margin:0;max-width:760px}
+.btn{border:0;border-radius:10px;padding:11px 15px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
+.btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:#0d55a8;transform:translateY(-1px)}
+.btn-light{background:var(--sky);color:var(--blue)}.btn-outline{background:#fff;border:1px solid var(--line);color:var(--ink)}
+.btn-danger{background:#fee2e2;color:#991b1b}.btn-sm{padding:7px 10px;font-size:11px}
+.grid{display:grid;gap:16px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.stat{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.stat-label{font-size:12px;color:var(--muted)}.stat-value{font-size:28px;font-weight:800;letter-spacing:-1px;margin:8px 0 3px}.stat-note{font-size:10px;color:var(--muted)}
+.stat-icon{width:39px;height:39px;border-radius:12px;background:var(--sky);color:var(--blue);display:grid;place-items:center;font-size:18px}
+.two-col{grid-template-columns:1.35fr 1fr}.three-col{grid-template-columns:repeat(3,1fr)}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:700px}th{text-align:left;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.7px;background:#f8fafc;padding:12px 11px;border-bottom:1px solid var(--line)}
+td{padding:13px 11px;border-bottom:1px solid #edf1f6;font-size:12px}tr:last-child td{border-bottom:0}
+.status{display:inline-flex;align-items:center;gap:6px;border-radius:30px;padding:6px 9px;font-size:10px;font-weight:800;white-space:nowrap}
+.status:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.s-red{background:#fee2e2;color:#b91c1c}.s-yellow{background:#fef3c7;color:#946200}.s-green{background:#dcfce7;color:#15803d}.s-blue{background:#dbeafe;color:#1d4ed8}.s-gray{background:#f1f5f9;color:#475569}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:14px}.field{display:grid;gap:6px;margin-bottom:14px}.field label{font-size:11px;font-weight:750;color:#334155}.field small,.help{font-size:10px;color:var(--muted);line-height:1.5}
+input,select,textarea{width:100%;border:1px solid #dbe3ee;background:#fff;border-radius:9px;padding:11px 12px;color:var(--ink);font-size:12px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--blue2);box-shadow:0 0 0 3px #1976d21c}textarea{resize:vertical;min-height:95px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}.span-2{grid-column:1/-1}
+.section-label{font-size:12px;font-weight:800;color:var(--blue);margin:18px 0 12px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.notice{padding:12px 14px;border-radius:11px;background:var(--sky);color:#164b87;font-size:11px;line-height:1.6;margin-bottom:16px}
+.hero{background:linear-gradient(115deg,#0b2545 0%,#1459a7 65%,#2786d8 100%);border-radius:22px;color:#fff;padding:38px;display:grid;grid-template-columns:1.25fr .75fr;gap:20px;overflow:hidden;position:relative;margin-bottom:20px}
+.hero:after{content:"";position:absolute;width:330px;height:330px;border:1px solid #ffffff22;border-radius:50%;right:-80px;top:-120px;box-shadow:0 0 0 35px #ffffff08,0 0 0 75px #ffffff06}
+.hero h1{font-size:34px;max-width:620px;margin:12px 0}.hero p{color:#d8eaff;font-size:13px;line-height:1.8;max-width:600px}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.hero .btn-light{background:#fff;color:var(--blue)}
+.hero-art{align-self:center;justify-self:center;font-size:100px;opacity:.9;z-index:1;filter:drop-shadow(0 15px 18px #00152d66)}
+.feature-grid{grid-template-columns:repeat(3,1fr)}.feature{display:flex;gap:13px;align-items:flex-start}.feature-link{width:100%;text-align:left;color:inherit;position:relative;cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.feature-link:hover{transform:translateY(-3px);border-color:#9bc5f2;box-shadow:0 12px 30px rgba(20,80,145,.13)}.feature-link:focus-visible{outline:3px solid #60a5fa;outline-offset:3px}.feature-arrow{margin-left:auto;color:var(--blue);font-size:17px;font-weight:800}.feature-icon{width:42px;height:42px;flex:none;background:var(--sky);border-radius:12px;display:grid;place-items:center;color:var(--blue);font-size:19px}.feature p{font-size:11px;line-height:1.6;color:var(--muted);margin:5px 0}
+.steps{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.step{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 10px;text-align:center}.step b{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;margin:0 auto 9px;background:var(--sky);color:var(--blue);font-size:11px}.step span{font-size:10px;line-height:1.5;color:#475569}
+.label-card{border-radius:14px;padding:17px;border:1px solid var(--line);display:flex;gap:13px;align-items:flex-start;background:#fff}.swatch{width:13px;height:48px;border-radius:8px;flex:none}.label-card p{font-size:11px;color:var(--muted);line-height:1.6;margin:5px 0 0}
+.article{overflow:hidden;padding:0}.article-cover{height:110px;background:linear-gradient(130deg,#dcecff,#9bc8f5);display:grid;place-items:center;font-size:40px}.article-body{padding:15px}.article-body p{font-size:11px;color:var(--muted);line-height:1.6}
+.timeline{display:grid;gap:0}.timeline-item{display:grid;grid-template-columns:22px 1fr;gap:10px;min-height:62px}.timeline-dot{width:12px;height:12px;border-radius:50%;background:#cbd5e1;margin-top:3px;position:relative}.timeline-item:not(:last-child) .timeline-dot:after{content:"";position:absolute;top:12px;left:5px;width:2px;height:50px;background:#e2e8f0}.timeline-item.done .timeline-dot{background:var(--green)}.timeline-item.current .timeline-dot{background:var(--blue);box-shadow:0 0 0 4px #dbeafe}.timeline-item b{font-size:12px}.timeline-item p{font-size:10px;color:var(--muted);margin:4px 0 0}
+.empty{text-align:center;padding:35px;color:var(--muted);font-size:12px}.empty span{font-size:30px;display:block;margin-bottom:8px}
+.footer{padding:20px 30px;color:var(--muted);font-size:10px;border-top:1px solid var(--line);background:#fff}
+.toast{position:fixed;right:22px;bottom:22px;background:#102f50;color:#fff;padding:13px 17px;border-radius:12px;box-shadow:var(--shadow);font-size:12px;z-index:99;opacity:0;transform:translateY(10px);pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:none}
+.modal-backdrop{display:none;position:fixed;inset:0;background:#0b254577;z-index:50;align-items:center;justify-content:center;padding:20px}.modal-backdrop.show{display:flex}.modal{background:#fff;border-radius:16px;padding:22px;width:min(560px,100%);max-height:90vh;overflow:auto}
+.mobile-overlay{display:none}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:repeat(3,1fr)}.feature-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.mobile-overlay.show{display:block;position:fixed;inset:0;background:#06172b80;z-index:15}.main{margin-left:0;width:100%}.hamb{display:block}.topbar{padding:0 16px}.content{padding:20px 15px 35px}.page-head{flex-direction:column}.hero{grid-template-columns:1fr;padding:25px}.hero h1{font-size:27px}.hero-art{display:none}.two-col,.three-col{grid-template-columns:1fr}.steps{grid-template-columns:repeat(2,1fr)}.feature-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.span-2{grid-column:auto}.topbar .crumb{display:none}}
+@media(max-width:420px){.stats{grid-template-columns:1fr 1fr;gap:9px}.card{padding:13px}.stat-value{font-size:23px}.hero{padding:21px}.hero h1{font-size:24px}.role-select{max-width:125px;font-size:10px}}
+
+/* ===== TEMA GEN Z ===== */
+:root{--navy:#1b1050;--blue:#5b3df5;--blue2:#7c5cff;--sky:#efeaff;--bg:#f7f4ff;--ink:#1d1a3b;--muted:#6b6890;--line:#e8e2fb;--shadow:0 10px 30px rgba(91,61,245,.12);--radius:22px;--grad:linear-gradient(135deg,#5b3df5,#a23cf0 55%,#ff4fa3)}
+body{font-family:"Plus Jakarta Sans",Inter,ui-sans-serif,system-ui,sans-serif;background:radial-gradient(900px 500px at 100% -10%,#ffd9ec99,transparent 60%),radial-gradient(800px 500px at -10% 30%,#cfe9ff99,transparent 60%),var(--bg);background-attachment:fixed}
+h1,h2,h3,.stat-value{font-family:"Bricolage Grotesque","Plus Jakarta Sans",sans-serif}
+h1{font-size:30px;letter-spacing:-1px}h2{font-size:20px}.subtitle{font-size:14px}
+button:focus-visible,a:focus-visible{outline:3px solid #ff4fa3;outline-offset:2px}
+.sidebar{background:linear-gradient(185deg,#1b1050 0%,#34179c 55%,#0b7a9e 125%)}
+.brand-icon{background:var(--grad);font-size:22px;box-shadow:0 6px 18px #ff4fa355;animation:wob 4s ease-in-out infinite}
+@keyframes wob{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg) scale(1.06)}}
+.nav-label{color:#b9a9ff;font-size:11px}
+.nav button{font-size:14px;font-weight:600;border-radius:14px;transition:.2s}
+.nav button:hover{background:#ffffff1c;transform:translateX(4px)}
+.nav button.active{background:linear-gradient(90deg,#ff4fa3,#7c5cff);box-shadow:0 8px 20px #ff4fa344;color:#fff}
+.nav .ico{width:26px;font-size:18px}
+.topbar{background:#ffffffcc;backdrop-filter:blur(12px)}
+.avatar{background:var(--grad);color:#fff}
+.role-select{border-radius:99px;font-weight:600;border:1.5px solid var(--line)}
+.eyebrow{display:inline-block;background:#fff;border:1px solid var(--line);color:var(--blue);padding:5px 12px;border-radius:99px;letter-spacing:.8px}
+.page{animation:pageIn .35s cubic-bezier(.3,1.3,.5,1)}@keyframes pageIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.btn{border-radius:99px;padding:12px 18px;font-size:13px;font-weight:700}
+.btn:active{transform:scale(.96)}
+.btn-primary,.btn-primary:hover{background:var(--grad)}
+.btn-primary{box-shadow:0 8px 20px #7c3aed44}.btn-primary:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 12px 26px #7c3aed55}
+.btn-light:hover{background:#e3dbff}.btn-sm{padding:8px 13px;font-size:12px}
+.card{border:1px solid #fff;border-radius:var(--radius)}
+/* hero */
+.hero{background:linear-gradient(120deg,#2a0f7a,#5b3df5,#d63fa8,#ff8a3d);background-size:240% 240%;animation:shift 14s ease infinite;border-radius:30px;padding:40px;grid-template-columns:1.05fr .95fr;gap:28px;box-shadow:0 22px 50px #5b3df540}
+@keyframes shift{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+.hero>div{position:relative;z-index:1}.hero h1{font-size:40px;letter-spacing:-1.2px}.hero p{font-size:14.5px}
+.hero .eyebrow{background:#ffffff22;border-color:#ffffff33}
+.hero:after{border-color:#ffffff33}
+.hero .btn-outline{background:#ffffff1f;border:1px solid #ffffff66;color:#fff}
+.hero-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.hero-chips span{background:#ffffff22;border:1px solid #ffffff33;backdrop-filter:blur(6px);padding:7px 12px;border-radius:99px;font-size:12px;font-weight:700}
+.fl{position:absolute;font-size:30px;z-index:2;pointer-events:none;animation:float 6s ease-in-out infinite;filter:drop-shadow(0 8px 10px #0004)}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-14px) rotate(8deg)}}
+.hero-chart{background:#150a45cc;border:1px solid #ffffff2e;border-radius:24px;padding:18px 18px 12px;backdrop-filter:blur(10px);align-self:center;box-shadow:0 20px 40px #0003}
+.hc-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}.hc-top b{font-family:"Bricolage Grotesque",sans-serif;font-size:17px}
+.demo-tag{background:#ffc23322;color:#ffd166;border:1px solid #ffc23355;border-radius:99px;font-size:10px;font-weight:800;padding:3px 9px}
+.hc-legend{display:flex;gap:14px;font-size:12px;color:#ddd5ff;margin-bottom:4px;flex-wrap:wrap}.hc-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.hero-chart svg{width:100%;height:auto;display:block;overflow:visible}
+.draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.4s cubic-bezier(.6,.1,.2,1) .3s forwards}@keyframes draw{to{stroke-dashoffset:0}}
+.area,.pt,.tr{opacity:0;animation:fadeIn .8s 1.8s forwards}.pt{animation-delay:2.2s}.tr{animation-delay:2.8s;animation-duration:.3s;filter:drop-shadow(0 0 6px #fff9)}
+@keyframes fadeIn{to{opacity:1}}
+.pulse{opacity:0;transform-box:fill-box;transform-origin:center;animation:pulse 1.8s ease-out 2.6s infinite}@keyframes pulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(3.2);opacity:0}}
+/* ticker */
+.ticker{overflow:hidden;background:#fff;border-radius:99px;border:1px solid var(--line);margin-bottom:18px;padding:10px 0;box-shadow:var(--shadow);-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.ticker-track{display:flex;width:max-content;animation:marq 40s linear infinite}.ticker:hover .ticker-track{animation-play-state:paused}
+.tk{white-space:nowrap;font-size:13px;font-weight:700;background:var(--sky);padding:6px 14px;border-radius:99px;margin-right:12px}
+@keyframes marq{to{transform:translateX(-50%)}}
+/* stat */
+.stat{position:relative;overflow:hidden;transition:transform .2s}.stat:hover{transform:translateY(-4px) rotate(-.4deg)}
+.stat:before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:var(--c)}
+.stat-label{font-size:13px;font-weight:600}.stat-note{font-size:11.5px}.stat-value{font-size:34px}
+.stat-icon{width:50px;height:50px;border-radius:17px;font-size:25px;background:var(--bg2);animation:bob 3s ease-in-out infinite}@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.stats>.card:nth-child(1){--c:linear-gradient(90deg,#7c5cff,#a23cf0);--bg2:#efeaff}
+.stats>.card:nth-child(2){--c:linear-gradient(90deg,#ffc233,#ff8a3d);--bg2:#fff3d1}
+.stats>.card:nth-child(3){--c:linear-gradient(90deg,#22b8ff,#5b3df5);--bg2:#d9f1ff}
+.stats>.card:nth-child(4){--c:linear-gradient(90deg,#12d6a0,#7be495);--bg2:#d5fbea}
+/* steps & features */
+.steps{gap:14px}.step{border:0;border-radius:20px;padding:18px 10px;background:var(--sk);transition:.2s}.step:hover{transform:translateY(-6px) rotate(-1.5deg)}
+.step b{width:48px;height:48px;font-size:24px;background:#fff;box-shadow:0 6px 14px #0001;margin-bottom:11px}.step span{font-size:12.5px;font-weight:600;color:var(--ink)}
+.step:nth-child(1){--sk:#ffe8f3}.step:nth-child(2){--sk:#efeaff}.step:nth-child(3){--sk:#d9f1ff}.step:nth-child(4){--sk:#fff3d1}.step:nth-child(5){--sk:#ffe1d6}.step:nth-child(6){--sk:#d5fbea}
+.feature h3{font-size:16px}.feature p{font-size:12.5px}
+.feature-icon{width:52px;height:52px;border-radius:17px;font-size:26px;transition:.25s}
+.feature-link:hover{border-color:#c7b8ff;box-shadow:0 16px 34px #5b3df533}.feature-link:hover .feature-icon{transform:rotate(-10deg) scale(1.15)}
+.feature-arrow{background:var(--sky);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:15px;transition:.2s;flex:none}.feature-link:hover .feature-arrow{background:var(--blue);color:#fff;transform:rotate(45deg)}
+.feature-grid>:nth-child(1) .feature-icon{background:#ffe0f0}.feature-grid>:nth-child(2) .feature-icon{background:#d9f1ff}.feature-grid>:nth-child(3) .feature-icon{background:#fff0c2}.feature-grid>:nth-child(4) .feature-icon{background:#e2ddff}.feature-grid>:nth-child(5) .feature-icon{background:#d5fbea}.feature-grid>:nth-child(6) .feature-icon{background:#ffe1d6}
+.article{transition:.2s}.article:hover{transform:translateY(-5px)}.article-cover{height:130px;font-size:58px}
+.three-col>.article:nth-child(1) .article-cover{background:linear-gradient(135deg,#ffd9ec,#ffb86b)}.three-col>.article:nth-child(2) .article-cover{background:linear-gradient(135deg,#c8f1ff,#9b8cff)}.three-col>.article:nth-child(3) .article-cover{background:linear-gradient(135deg,#c3f9e2,#ffe27a)}
+.article-body p{font-size:12.5px}
+.label-card{border:0;border-radius:22px;box-shadow:var(--shadow);transition:.2s}.label-card:hover{transform:translateY(-5px) rotate(-.6deg)}.label-card p{font-size:12.5px}.swatch{width:16px;border-radius:99px}
+.three-col>.label-card:nth-child(1){background:linear-gradient(135deg,#fff,#ffe3e3)}.three-col>.label-card:nth-child(2){background:linear-gradient(135deg,#fff,#fff1bf)}.three-col>.label-card:nth-child(3){background:linear-gradient(135deg,#fff,#d3f9e4)}
+/* status, tabel, form */
+.status{font-size:11px;padding:6px 11px}.status:before{display:none}
+.s-red{background:#ffe0e0;color:#c01f1f}.s-yellow{background:#fff1bf;color:#8a5a00}.s-green{background:#d3f9e4;color:#0f7a43}.s-blue{background:#dcd6ff;color:#4a2fd1}
+th{background:#f4f0ff;font-size:11px}td{font-size:13px;padding:14px 12px}tbody tr{transition:.15s}tbody tr:hover{background:#faf7ff}
+input,select,textarea{border-radius:14px;border:1.5px solid #e1d9fb;font-size:14px;padding:12px 14px}
+input:focus,select:focus,textarea:focus{border-color:var(--blue2);box-shadow:0 0 0 4px #7c5cff22}
+.field label{font-size:12.5px}.field small,.help{font-size:11px}
+.section-label{font-family:"Bricolage Grotesque",sans-serif;font-size:16px;color:var(--ink);border-bottom:2px dashed #e1d9fb}
+.notice{background:#fff7d6;color:#7a5200;border:1px dashed #ffd166;border-radius:16px;font-size:12.5px}.notice:before{content:"💡 "}
+.timeline-dot{width:14px;height:14px}.timeline-item:not(:last-child) .timeline-dot:after{left:6px;top:14px}
+.timeline-item.done .timeline-dot{background:#12d6a0}.timeline-item.current .timeline-dot{background:var(--blue2);box-shadow:none;animation:ring 1.6s infinite}
+@keyframes ring{0%{box-shadow:0 0 0 0 #7c5cff88}100%{box-shadow:0 0 0 12px #7c5cff00}}
+.timeline-item b{font-size:14px}.timeline-item p{font-size:12px}
+#statusBars>div>div:nth-child(2){height:12px!important}#statusBars>div>div:nth-child(2)>div{transform-origin:left;animation:grow 1.2s cubic-bezier(.3,1,.4,1)}@keyframes grow{from{transform:scaleX(0)}}
+.modal-backdrop{background:#1b105077;backdrop-filter:blur(4px)}.modal{border-radius:26px;animation:pop .3s cubic-bezier(.3,1.6,.5,1)}@keyframes pop{from{transform:scale(.85);opacity:0}}
+.toast{background:var(--grad);border-radius:99px;font-size:13px;font-weight:700;padding:13px 20px}
+.footer{background:transparent;border-top:1px dashed var(--line);font-size:12px}
+.confetti{position:fixed;top:-30px;z-index:120;pointer-events:none;animation:fall linear forwards}@keyframes fall{to{transform:translate(var(--dx),110vh) rotate(540deg)}}
+@media(max-width:1050px){.hero{grid-template-columns:1fr}.hero-chart{max-width:560px}}
+@media(max-width:760px){.hero{padding:24px;border-radius:24px}.hero h1{font-size:28px}.fl.x{display:none}.stat-value{font-size:28px}}
+@media(max-width:420px){.stat-value{font-size:24px}.hero h1{font-size:25px}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.draw{stroke-dashoffset:0}.area,.pt,.tr{opacity:1}}
+
+/* ===== INDIKATOR CLOUD ===== */
+.sync{display:inline-flex;align-items:center;gap:7px;border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:7px 13px;font-size:12px;font-weight:700;transition:.2s}
+.sync:hover{transform:translateY(-1px)}
+.sync.ok{background:#d3f9e4;border-color:#9be8c0;color:#0f7a43}.sync.loading{background:#efeaff;border-color:#d4c9ff;color:#4a2fd1}.sync.off{background:#ffe0e0;border-color:#ffb3b3;color:#c01f1f}
+.sync.loading .sync-ic{display:inline-block;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.sync.ok .sync-ic{animation:bob 3s ease-in-out infinite}
+@media(max-width:760px){#syncText{display:none}.sync{padding:7px 10px}}
+</style>
+</head>
+<body>
+<div class="mobile-overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+ <div class="brand"><div class="brand-icon">🩺</div><div><strong>SIPANTAU ALKES</strong><small>RSUD BHAKTI DHARMA HUSADA SURABAYA</small></div></div>
+ <div class="nav-label">Menu Utama</div>
+ <nav class="nav">
+  <button class="active" data-page="home"><span class="ico">🏠</span>Beranda</button>
+  <button data-page="about"><span class="ico">💡</span>Tentang Sistem</button>
+  <button data-page="education"><span class="ico">📚</span>Pusat Edukasi</button>
+  <button data-page="labels"><span class="ico">🏷️</span>Panduan Pelabelan</button>
+  <button data-page="report"><span class="ico">➕</span>Buat Laporan</button>
+  <button data-page="track"><span class="ico">🔍</span>Lacak Laporan</button>
+ </nav>
+ <div class="nav-label">Area Pengguna</div>
+ <nav class="nav">
+  <button data-page="userdash"><span class="ico">📊</span>Dashboard Pelapor</button>
+  <button data-page="history"><span class="ico">🕒</span>Riwayat Perbaikan</button>
+ </nav>
+ <div class="nav-label">Administrasi IPS</div>
+ <nav class="nav">
+  <button data-page="ips"><span class="ico">🛠️</span>Dashboard IPS</button>
+  <button data-page="manage"><span class="ico">🗂️</span>Kelola Laporan</button>
+  <button data-page="settings"><span class="ico">⚙️</span>Pengaturan</button>
+ </nav>
+ <div class="sidebar-bottom">PKL 4 RS Muh. Aditya Faishal<br>© SIPANTAU ALKES</div>
+</aside>
+<main class="main">
+ <header class="topbar">
+  <div class="top-left"><button class="hamb" onclick="toggleSidebar()">☰</button><div class="crumb" id="breadcrumb">Beranda / Ringkasan</div></div>
+  <div class="top-actions"><button type="button" class="sync loading" id="syncBadge" onclick="loadCloud()" title="Klik untuk sinkronkan ulang"><span class="sync-ic" id="syncIcon">🔄</span><span id="syncText">Menyinkronkan…</span></button><select class="role-select" id="roleSelect" onchange="changeRole()"><option value="public">👀 Mode: Pengunjung</option><option value="reporter">📝 Mode: Pelapor</option><option value="ips">🛠️ Mode: Petugas IPS</option><option value="admin">👑 Mode: Administrator</option></select><div class="avatar">SA</div></div>
+ </header>
+ <div class="content">
+
+ <!-- HOME -->
+ <section class="page active" id="page-home">
+  <div class="hero">
+   <div><div class="eyebrow" style="color:#a9d3ff">🏥 Instalasi Pemeliharaan Sarana</div><h1>Pelaporan dan Pemantauan Perbaikan Alat Kesehatan</h1><p>Satu platform digital untuk membantu pengguna melaporkan kerusakan, memantau proses perbaikan, dan memperoleh informasi status tindak lanjut alat kesehatan.</p><div class="hero-actions"><button class="btn btn-light" onclick="showPage('report')">＋ Laporkan Kerusakan</button><button class="btn btn-outline" onclick="showPage('track')">Lacak Laporan →</button></div><div class="hero-chips"><span>⚡ Lapor cepat</span><span>📍 Status terlacak</span></div></div>
+   <div class="hero-chart"><div id="heroChart"></div></div>
+   <span class="fl" style="left:45%;top:4%">🩺</span><span class="fl" style="right:2%;top:6%;animation-delay:-2s">💉</span><span class="fl" style="left:41%;bottom:5%;animation-delay:-4s">🫀</span><span class="fl x" style="right:3%;bottom:4%;animation-delay:-1s">🧪</span><span class="fl x" style="left:2%;bottom:3%;animation-delay:-3s">✨</span><span class="fl x" style="left:28%;top:3%;animation-delay:-5s">🩻</span>
+  </div>
+  <div class="ticker" aria-label="Pembaruan laporan terbaru"><div class="ticker-track" id="tickerTrack"></div></div>
+  <div class="grid stats">
+   <div class="card stat"><div><div class="stat-label">Total Laporan</div><div class="stat-value" id="homeTotal">128</div><div class="stat-note">Data Pelaporan</div></div><div class="stat-icon">📋</div></div>
+   <div class="card stat"><div><div class="stat-label">Menunggu Verifikasi</div><div class="stat-value" id="homePending">12</div><div class="stat-note">Perlu ditinjau petugas</div></div><div class="stat-icon">⏳</div></div>
+   <div class="card stat"><div><div class="stat-label">Dalam Perbaikan</div><div class="stat-value" id="homeRepair">18</div><div class="stat-note">Sedang ditangani</div></div><div class="stat-icon">🔧</div></div>
+   <div class="card stat"><div><div class="stat-label">Selesai</div><div class="stat-value" id="homeDone">98</div><div class="stat-note">Siap Digunakan</div></div><div class="stat-icon">🎉</div></div>
+  </div>
+  <div class="card" style="margin-bottom:25px"><h2>Alur Pelaporan dan Pemantauan</h2><div class="steps">
+   <div class="step"><b>🧐</b><span>Pengguna menemukan kendala pada alat</span></div><div class="step"><b>📲</b><span>Pengguna mengirim laporan digital</span></div><div class="step"><b>✅</b><span>IPS menerima dan memverifikasi</span></div><div class="step"><b>🔧</b><span>IPS melakukan tindak lanjut</span></div><div class="step"><b>👀</b><span>Pengguna memantau status</span></div><div class="step"><b>🎉</b><span>Alat dinyatakan siap digunakan</span></div>
+  </div></div>
+  <div class="grid feature-grid">
+   <button type="button" class="card feature feature-link" onclick="showPage('report')" aria-label="Buka halaman Pelaporan Digital"><div class="feature-icon">📝</div><div><h3>Pelaporan Digital</h3><p>Formulir sederhana untuk melaporkan informasi kerusakan alat.</p></div><span class="feature-arrow">↗</span></button>
+   <button type="button" class="card feature feature-link" onclick="showPage('track')" aria-label="Buka halaman Monitoring Status"><div class="feature-icon">⏱️</div><div><h3>Monitoring Status</h3><p>Memantau tahapan penanganan dan pembaruan dari petugas IPS.</p></div><span class="feature-arrow">↗</span></button>
+   <button type="button" class="card feature feature-link" onclick="showPage('labels')" aria-label="Buka halaman Pelabelan Status"><div class="feature-icon">🏷️</div><div><h3>Pelabelan Status</h3><p>Panduan identifikasi visual status alat kesehatan.</p></div><span class="feature-arrow">↗</span></button>
+   <button type="button" class="card feature feature-link" onclick="showPage('history')" aria-label="Buka halaman Riwayat Perbaikan"><div class="feature-icon">🗂</div><div><h3>Riwayat Perbaikan</h3><p>Dokumentasi laporan dan tindak lanjut perbaikan.</p></div><span class="feature-arrow">↗</span></button>
+   <button type="button" class="card feature feature-link" onclick="showPage('education')" aria-label="Buka halaman Pusat Edukasi"><div class="feature-icon">📖</div><div><h3>Pusat Edukasi</h3><p>Informasi pelaporan, keselamatan, dan pemeliharaan alat.</p></div><span class="feature-arrow">↗</span></button>
+   <button type="button" class="card feature feature-link" onclick="showPage('ips')" aria-label="Buka halaman Dashboard IPS"><div class="feature-icon">📈</div><div><h3>Dashboard IPS</h3><p>Pengelolaan laporan dan ringkasan monitoring oleh petugas.</p></div><span class="feature-arrow">↗</span></button>
+  </div>
+ </section>
+
+ <!-- ABOUT -->
+ <section class="page" id="page-about">
+  <div class="page-head"><div><div class="eyebrow">Profil Program</div><h1>💡 Tentang SIPANTAU ALKES</h1><p class="subtitle">Gambaran sistem digital untuk mendukung pelaporan dan pemantauan perbaikan alat kesehatan di lingkungan rumah sakit.</p></div></div>
+  <div class="card"><h2>Latar Belakang</h2><p class="subtitle">Proses pelaporan kerusakan alat kesehatan perlu didukung alur komunikasi dan dokumentasi yang mudah ditelusuri. Prototype ini menggambarkan pengembangan kanal pelaporan langsung bagi pengguna alat, dilengkapi pemantauan tindak lanjut oleh petugas IPS.</p><div class="section-label">Tujuan Pengembangan</div><ul class="subtitle" style="line-height:2"><li>Mempermudah pengguna menyampaikan laporan kerusakan.</li><li>Mendukung verifikasi dan pengelolaan laporan oleh petugas IPS.</li><li>Menyediakan informasi perkembangan status perbaikan.</li><li>Mendukung standardisasi identifikasi status alat melalui label.</li><li>Menyediakan edukasi dan dokumentasi tindak lanjut.</li></ul><div class="section-label">Catatan Implementasi</div><div class="notice">Prototype ini merupakan rancangan awal. Penerapan operasional, integrasi dengan SIMAK, penetapan SOP, dan penggunaan identitas rumah sakit harus memperoleh persetujuan petugas.</div></div>
+ </section>
+
+ <!-- EDUCATION -->
+ <section class="page" id="page-education">
+  <div class="page-head"><div><div class="eyebrow">Knowledge Center</div><h1>📚 Pusat Edukasi</h1><p class="subtitle">Informasi dasar untuk membantu pengguna memahami pelaporan dan identifikasi status alat kesehatan.</p></div></div>
+  <div class="grid three-col">
+   <article class="card article"><div class="article-cover">🔧</div><div class="article-body"><span class="status s-blue">Pemeliharaan</span><h3 style="margin-top:10px">Pemeliharaan Alat</h3><p>Pentingnya pemeliharaan alat kesehatan sesuai petunjuk penggunaan dan ketentuan teknis.</p><button class="btn btn-light btn-sm" onclick="articleInfo('Pemeliharaan Alat','Pemeliharaan alat kesehatan harus mengikuti petunjuk penggunaan dari produsen dan prosedur rumah sakit. Pengguna melakukan pemeriksaan awal sesuai kewenangannya, menjaga kebersihan alat, serta melaporkan kondisi tidak normal kepada petugas IPS. Jangan melakukan perbaikan sendiri tanpa kewenangan.')">Baca selengkapnya</button></div></article>
+   <article class="card article"><div class="article-cover">📋</div><div class="article-body"><span class="status s-blue">Pelaporan</span><h3 style="margin-top:10px">Cara Membuat Laporan</h3><p>Panduan mengisi identitas alat, unit/ruangan, dan gejala kerusakan secara jelas.</p><button class="btn btn-light btn-sm" onclick="articleInfo('Cara Membuat Laporan','Pilih menu Buat Laporan, isi nama pelapor dan unit/ruangan, masukkan nama atau kode alat bila tersedia, pilih jenis keluhan, lalu jelaskan gejala yang ditemukan secara ringkas dan jelas. Foto kondisi alat dapat ditambahkan jika diperbolehkan. Jangan memasukkan data pasien. Setelah laporan dikirim, simpan nomor tiket untuk memantau perkembangannya.')">Baca selengkapnya</button></div></article>
+   <article class="card article"><div class="article-cover">🏷️</div><div class="article-body"><span class="status s-blue">Pelabelan</span><h3 style="margin-top:10px">Memahami Status Label</h3><p>Penjelasan label alat rusak, dalam proses perbaikan, dan selesai/siap digunakan.</p><button class="btn btn-light btn-sm" onclick="articleInfo('Memahami Status Label','MERAH – RUSAK: alat tidak boleh digunakan sampai ada pemeriksaan dan tindak lanjut petugas. KUNING – DALAM PERBAIKAN: alat sedang diperiksa atau diperbaiki. HIJAU – SELESAI / SIAP DIGUNAKAN: alat telah selesai ditangani dan dinyatakan siap digunakan oleh petugas. Skema warna dan tata cara pemasangan label harus mengikuti SOP/IK yang disahkan rumah sakit.')">Baca selengkapnya</button></div></article>
+  </div>
+ </section>
+
+ <!-- LABELS -->
+ <section class="page" id="page-labels">
+  <div class="page-head"><div><div class="eyebrow">Identifikasi Visual</div><h1>🏷️ Panduan Pelabelan Status Alat</h1><p class="subtitle">Contoh konsep label fisik untuk membantu identifikasi status alat. Skema warna wajib disetujui rumah sakit sebelum diterapkan.</p></div><button class="btn btn-primary" onclick="showToast('Fitur cetak label akan dikembangkan pada tahap berikutnya.')">Cetak Contoh Label</button></div>
+  <div class="grid three-col">
+   <div class="label-card"><div class="swatch" style="background:#dc2626"></div><div><span class="status s-red">🔴 MERAH</span><h3 style="margin-top:10px">RUSAK</h3><p>Alat mengalami kerusakan dan tidak boleh digunakan sampai dilakukan pemeriksaan serta tindak lanjut oleh petugas.</p></div></div>
+   <div class="label-card"><div class="swatch" style="background:#eab308"></div><div><span class="status s-yellow">🟡 KUNING</span><h3 style="margin-top:10px">DALAM PERBAIKAN</h3><p>Alat sedang dalam pemeriksaan atau proses perbaikan oleh petugas IPS.</p></div></div>
+   <div class="label-card"><div class="swatch" style="background:#16a34a"></div><div><span class="status s-green">🟢 HIJAU</span><h3 style="margin-top:10px">SELESAI / SIAP DIGUNAKAN</h3><p>Alat telah selesai ditangani dan dinyatakan siap digunakan berdasarkan pemeriksaan petugas.</p></div></div>
+  </div>
+  <div class="card" style="margin-top:18px"><h2>Informasi yang dicantumkan pada label</h2><div class="grid two-col"><div><ul class="subtitle" style="line-height:2"><li>Nama dan/atau kode alat.</li><li>Nomor tiket atau identifikasi laporan.</li><li>Tanggal pemasangan label.</li><li>Unit/ruangan.</li><li>Nama atau paraf petugas.</li></ul></div><div class="notice">Warna bukan satu-satunya identifikasi. Label harus mencantumkan tulisan status yang jelas. Penempatan, pelepasan, dan perubahan label mengikuti SOP/IK yang disahkan rumah sakit.</div></div></div>
+ </section>
+
+ <!-- REPORT -->
+ <section class="page" id="page-report">
+  <div class="page-head"><div><div class="eyebrow">Formulir Digital</div><h1>🚨 Laporkan Kerusakan Alat</h1><p class="subtitle">Isi informasi berdasarkan kondisi alat yang ditemukan. Data akan menjadi laporan demonstrasi pada prototype ini.</p></div></div>
+  <form class="card" id="reportForm">
+   <div class="notice" style="margin-top:0">Tanggal dan jam terisi otomatis sesuai waktu perangkat. Ubah pada bagian 04 bila kerusakan ditemukan di waktu yang berbeda.</div>
+   <div class="section-label" style="margin-top:0">01 · 👤 Informasi Pelapor</div>
+   <div class="form-grid">
+    <div class="field"><label>Nama pelapor *</label><input name="reporter" required placeholder="Nama lengkap"></div>
+    <div class="field"><label>Unit / ruangan *</label><input name="unit" required placeholder="Contoh: IGD, ICU, Rawat Inap"></div>
+    <div class="field span-2"><label>Nomor telepon / ekstensi (opsional)</label><input name="contact" placeholder="Nomor yang dapat dihubungi"></div>
+   </div>
+   <div class="section-label">02 · 🩺 Identitas Alat</div>
+   <div class="form-grid">
+    <div class="field"><label>Nama alat kesehatan *</label><input name="equipment" required placeholder="Contoh: Monitor pasien"></div>
+    <div class="field"><label>Nomor inventaris / kode aset</label><input name="asset" placeholder="Jika tersedia"></div>
+    <div class="field"><label>Merek alat</label><input name="brand" placeholder="Jika diketahui"></div>
+    <div class="field"><label>Tipe alat</label><input name="type" placeholder="Jika diketahui"></div>
+   </div>
+   <div class="section-label">03 · 🛠️ Informasi Kerusakan</div>
+   <div class="form-grid">
+    <div class="field span-2"><label>Jenis keluhan *</label><select name="problem" required><option value="">Pilih jenis keluhan</option><option>Tidak dapat dinyalakan</option><option>Tidak berfungsi sebagaimana mestinya</option><option>Kerusakan fisik pada alat atau kabel</option><option>Indikator atau hasil alat tidak normal</option><option>Keluhan lainnya</option></select></div>
+    <div class="field span-2"><label>Deskripsi kendala yang ditemukan *</label><textarea name="description" required placeholder="Jelaskan gejala kerusakan dan kondisi alat saat ditemukan."></textarea></div>
+    <div class="field span-2"><label>Foto kondisi alat (opsional)</label><input type="file" name="photo" accept="image/png,image/jpeg"><small>Prototype ini belum mengunggah file ke server.</small></div>
+   </div>
+   <div class="section-label">04 · 🗓️ Tanggal dan Waktu</div>
+   <div class="form-grid">
+    <div class="field"><label for="rdate">Tanggal laporan *</label><input type="date" id="rdate" name="rdate" required></div>
+    <div class="field"><label for="rtime">Jam laporan *</label><input type="time" id="rtime" name="rtime" required></div>
+   </div>
+   <label style="display:flex;gap:9px;align-items:flex-start;font-size:11px;color:#475569;margin:8px 0 18px"><input type="checkbox" required style="width:auto;margin-top:1px"> Saya menyampaikan laporan berdasarkan kondisi alat yang ditemukan dan tidak menyertakan data pasien.</label>
+   <div style="display:flex;gap:9px;flex-wrap:wrap"><button class="btn btn-primary" type="submit">Kirim Laporan →</button><button class="btn btn-outline" type="reset">Kosongkan Form</button></div>
+  </form>
+ </section>
+
+ <!-- TRACK -->
+ <section class="page" id="page-track">
+  <div class="page-head"><div><div class="eyebrow">Tracking</div><h1>🔍 Lacak Status Laporan</h1><p class="subtitle">Masukkan nomor tiket untuk melihat contoh perkembangan penanganan laporan.</p></div></div>
+  <div class="card" style="max-width:780px"><form id="trackForm"><div class="field"><label>Nomor tiket laporan</label><div style="display:flex;gap:8px"><input id="ticketSearch" placeholder="Contoh: SIP-2026-001" required><button class="btn btn-primary">Cari</button></div></div></form><div id="trackResult"><div class="empty"><span>⌕</span>Masukkan nomor tiket untuk mencari laporan.</div></div></div>
+ </section>
+
+ <!-- USER DASH -->
+ <section class="page" id="page-userdash">
+  <div class="page-head"><div><div class="eyebrow">Portal Pelapor</div><h1>📊 Dashboard Pelapor</h1><p class="subtitle">Ringkasan laporan yang dibuat oleh pengguna.</p></div><button class="btn btn-primary" onclick="showPage('report')">＋ Buat Laporan</button></div>
+  <div class="grid stats" id="userStats"></div>
+  <div class="card"><h2>Laporan Saya</h2><div class="table-wrap"><table><thead><tr><th>Nomor tiket</th><th>Tanggal &amp; Jam Laporan</th><th>Nama alat</th><th>Unit</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="userTable"></tbody></table></div></div>
+ </section>
+
+ <!-- HISTORY -->
+ <section class="page" id="page-history">
+  <div class="page-head"><div><div class="eyebrow">Dokumentasi</div><h1>🕒 Riwayat Perbaikan</h1><p class="subtitle">Daftar laporan demonstrasi dan perkembangan penanganannya.</p></div></div>
+  <div class="card"><div class="toolbar"><input id="historySearch" placeholder="Cari tiket, alat, unit..." oninput="renderTables()" style="max-width:300px"><select id="historyFilter" onchange="renderTables()" style="max-width:200px"><option value="">Semua status</option><option>Menunggu verifikasi</option><option>Dalam perbaikan</option><option>Selesai / siap digunakan</option><option>Tidak dapat diperbaiki</option></select></div><div class="table-wrap"><table><thead><tr><th>Tiket</th><th>Tanggal &amp; Jam Laporan</th><th>Alat</th><th>Unit</th><th>Keluhan</th><th>Status</th></tr></thead><tbody id="historyTable"></tbody></table></div></div>
+ </section>
+
+ <!-- IPS DASH -->
+ <section class="page" id="page-ips">
+  <div class="page-head"><div><div class="eyebrow">Administrator Operasional</div><h1>🛠️ Dashboard Petugas IPS</h1><p class="subtitle">Ringkasan pengelolaan laporan kerusakan alat kesehatan.</p></div><button class="btn btn-outline" onclick="showToast('Ekspor akan tersedia setelah database diintegrasikan.')">↓ Ekspor Data</button></div>
+  <div class="grid stats" id="ipsStats"></div>
+  <div class="grid two-col">
+   <div class="card"><h2>Distribusi Status Laporan</h2><div id="statusBars"></div></div>
+   <div class="card"><h2>Ringkasan Pengelolaan</h2><p class="subtitle">Gunakan filter dan tabel untuk meninjau laporan, melakukan verifikasi, serta memperbarui status sesuai kewenangan.</p><div class="notice" style="margin-top:15px">Setiap perubahan status pada sistem operasional harus mencatat petugas, waktu, dan catatan tindak lanjut.</div><button class="btn btn-primary" onclick="showPage('manage')">Kelola Laporan →</button></div>
+  </div>
+  <div class="card" style="margin-top:18px"><h2>Laporan Terbaru</h2><div class="table-wrap"><table><thead><tr><th>Tiket</th><th>Tanggal &amp; Jam Laporan</th><th>Pelapor</th><th>Unit</th><th>Alat</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="ipsRecent"></tbody></table></div></div>
+ </section>
+
+ <!-- MANAGE -->
+ <section class="page" id="page-manage">
+  <div class="page-head"><div><div class="eyebrow">Manajemen Laporan</div><h1>🗂️ Kelola Laporan</h1><p class="subtitle">Verifikasi laporan dan perbarui status penanganan. Perubahan status tersimpan di Google Sheets dan terlihat oleh semua petugas.</p></div></div>
+  <div class="card"><div class="toolbar"><input id="manageSearch" placeholder="Cari tiket, pelapor, alat, unit..." oninput="renderTables()" style="max-width:320px"><select id="manageFilter" onchange="renderTables()" style="max-width:210px"><option value="">Semua status</option><option>Menunggu verifikasi</option><option>Dalam perbaikan</option><option>Selesai / siap digunakan</option><option>Tidak dapat diperbaiki</option></select></div><div class="table-wrap"><table><thead><tr><th>Tiket</th><th>Pelapor</th><th>Alat</th><th>Unit</th><th>Tanggal &amp; Jam Laporan</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="manageTable"></tbody></table></div></div>
+ </section>
+
+ <!-- SETTINGS -->
+ <section class="page" id="page-settings">
+  <div class="page-head"><div><div class="eyebrow">Konfigurasi</div><h1>⚙️ Pengaturan</h1><p class="subtitle">Pengaturan akun, peran pengguna, dan informasi sistem.</p></div></div>
+  <div class="grid two-col">
+   <div class="card"><h2>Peran dan Hak Akses</h2><p class="subtitle">Pelapor: membuat dan melihat laporan miliknya.</p><hr style="border:0;border-top:1px solid var(--line);margin:13px 0"><p class="subtitle">Petugas IPS: memverifikasi, memperbarui status, dan menambahkan catatan tindak lanjut.</p><hr style="border:0;border-top:1px solid var(--line);margin:13px 0"><p class="subtitle">Administrator: mengelola akun, master data, dan konfigurasi sistem.</p></div>
+   <div class="card"><h2>Status Integrasi</h2><span class="status s-green">Terhubung ke Google Sheets</span><p class="subtitle" style="margin-top:12px">Data laporan disimpan di Google Sheets melalui Google Apps Script dan disinkronkan otomatis setiap 30 detik. Belum ada autentikasi nyata, pengiriman notifikasi, atau koneksi ke SIMAK.</p><button class="btn btn-light" onclick="loadCloud()">Sinkronkan sekarang</button></div>
+  </div>
+ </section>
+
+ </div>
+ <footer class="footer">SIPANTAU ALKES • Prototype pengembangan program PKL 4 • RSUD Bhakti Dharma Husada Surabaya<br>Data demonstrasi, bukan data operasional rumah sakit.</footer>
+</main>
+</div>
+<div class="toast" id="toast"></div>
+<div class="modal-backdrop" id="modal"><div class="modal"><div style="display:flex;justify-content:space-between;gap:15px;align-items:center"><h2 id="modalTitle">Detail Laporan</h2><button class="btn btn-outline btn-sm" onclick="closeModal()">✕</button></div><div id="modalBody"></div></div></div>
+<script>
+const initialReports=[
+ {ticket:"SIP-2026-001",date:"03/11/2026",reporter:"Andi Pratama",unit:"IGD",equipment:"Monitor Pasien",asset:"ALK-001",brand:"Mindray",type:"BeneVision",problem:"Indikator atau hasil alat tidak normal",description:"Tampilan parameter tidak muncul secara konsisten.",status:"Menunggu verifikasi",note:"Laporan diterima, menunggu pemeriksaan petugas.",owner:""},
+ {ticket:"SIP-2026-002",date:"02/11/2026",reporter:"Siti Rahma",unit:"ICU",equipment:"Infusion Pump",asset:"ALK-023",brand:"B Braun",type:"Compact",problem:"Tidak berfungsi sebagaimana mestinya",description:"Alat menunjukkan alarm berulang.",status:"Dalam perbaikan",note:"Sedang dilakukan pemeriksaan teknis.",owner:"Petugas IPS"},
+ {ticket:"SIP-2026-003",date:"01/11/2026",reporter:"Budi Santoso",unit:"Rawat Inap",equipment:"Suction Pump",asset:"ALK-035",brand:"Yuwell",type:"7E-A",problem:"Tidak dapat dinyalakan",description:"Alat tidak menyala saat tombol daya ditekan.",status:"Selesai / siap digunakan",note:"Pemeriksaan dan tindak lanjut selesai. Status siap digunakan dikonfirmasi petugas.",owner:"Petugas IPS"},
+ {ticket:"SIP-2026-004",date:"31/10/2026",reporter:"Dewi Lestari",unit:"OK",equipment:"Patient Warmer",asset:"ALK-047",brand:"Generic",type:"PW-1",problem:"Kerusakan fisik pada alat atau kabel",description:"Terdapat kerusakan pada kabel daya.",status:"Dalam perbaikan",note:"Menunggu tindak lanjut teknis.",owner:"Petugas IPS"}
+];
+let reports=JSON.parse(localStorage.getItem("sipantau_cloud_cache")||"null")||[];
+
+function save(){try{localStorage.setItem("sipantau_cloud_cache",JSON.stringify(reports))}catch(e){}}
+function statusClass(s){if(s.includes("Menunggu"))return"s-yellow";if(s.includes("Dalam"))return"s-blue";if(s.includes("Selesai"))return"s-green";if(s.includes("Tidak"))return"s-red";return"s-gray"}
+function badge(s){const e=s.includes("Menunggu")?"⏳":s.includes("Dalam")?"🔧":s.includes("Selesai")?"✅":s.includes("Tidak")?"🚫":"•";return `<span class="status ${statusClass(s)}">${e} ${s}</span>`}
+function getReportDateTime(r){
+ const d = r.reportedAt ? new Date(r.reportedAt) : null;
+ if(d && !Number.isNaN(d.getTime())){
+  return {date:d.toLocaleDateString("id-ID",{day:"2-digit",month:"2-digit",year:"numeric"}),time:d.toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false})};
+ }
+ return {date:r.date||"-",time:r.time||"Belum tercatat"};
+}
+function formatReportDateTime(r){const dt=getReportDateTime(r);return `${dt.date} • ${dt.time}`;}
+function showToast(msg){const t=document.getElementById("toast");t.textContent="✨ "+msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800)}
+function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open");document.getElementById("overlay").classList.toggle("show")}
+function showPage(name){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ const target=document.getElementById("page-"+name);if(!target)return;target.classList.add("active");
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===name));
+ const labels={home:"Beranda / Ringkasan",about:"Tentang Sistem",education:"Pusat Edukasi",labels:"Panduan Pelabelan",report:"Buat Laporan",track:"Lacak Laporan",userdash:"Dashboard Pelapor",history:"Riwayat Perbaikan",ips:"Dashboard IPS",manage:"Kelola Laporan",settings:"Pengaturan"};
+ document.getElementById("breadcrumb").textContent=labels[name]||"SIPANTAU ALKES";
+ if(name==="ips"||name==="manage"||name==="history"||name==="userdash")renderTables();
+ if(innerWidth<760){document.getElementById("sidebar").classList.remove("open");document.getElementById("overlay").classList.remove("show")}
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+function changeRole(){const r=document.getElementById("roleSelect").value;if(r==="reporter")showPage("userdash");else if(r==="ips"||r==="admin")showPage("ips");else showPage("home");showToast("Mode tampilan demo diubah. Ini bukan autentikasi pengguna.");}
+document.getElementById("reportForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const f=new FormData(e.target);
+ const dv=f.get("rdate"),tv=f.get("rtime"),d=(dv&&tv)?new Date(dv+"T"+tv+":00"):new Date();
+ const ticket="SIP-"+d.getFullYear()+"-"+String(Date.now()).slice(-5);
+ const date=d.toLocaleDateString("id-ID",{day:"2-digit",month:"2-digit",year:"numeric"});
+ const time=d.toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false});
+ const item={ticket,date,time,reportedAt:d.toISOString(),reporter:f.get("reporter"),unit:f.get("unit"),contact:f.get("contact"),equipment:f.get("equipment"),asset:f.get("asset"),brand:f.get("brand"),type:f.get("type"),problem:f.get("problem"),description:f.get("description"),status:"Menunggu verifikasi",note:"Laporan berhasil dicatat pada prototype. Menunggu verifikasi petugas.",owner:""};
+ reports.unshift(item);save();cloudCreate(item);e.target.reset();renderTables();
+ confetti();showModal("Laporan berhasil dibuat",`<div class="notice">Laporan dikirim ke cloud (Google Sheets). Pantau indikator sinkronisasi di bagian atas layar.</div><p class="subtitle">Nomor tiket Anda:</p><h2 style="color:var(--blue);font-size:25px">${ticket}</h2><div class="grid two-col" style="margin:15px 0"><div><div class="help">TANGGAL PELAPORAN</div><b>${esc(date)}</b></div><div><div class="help">JAM PELAPORAN</div><b>${esc(time)} <span class="help">sesuai input</span></b></div></div><p class="subtitle">Simpan nomor tiket untuk simulasi pelacakan laporan.</p><button class="btn btn-primary" onclick="closeModal();document.getElementById('ticketSearch').value='${ticket}';showPage('track');trackTicket('${ticket}')">Lacak laporan</button>`);
+});
+document.getElementById("trackForm").addEventListener("submit",e=>{e.preventDefault();trackTicket(document.getElementById("ticketSearch").value.trim())});
+function trackTicket(ticket){
+ const r=reports.find(x=>x.ticket.toLowerCase()===ticket.toLowerCase());const box=document.getElementById("trackResult");
+ if(!r){box.innerHTML='<div class="empty"><span>⌕</span>Nomor tiket tidak ditemukan pada data demonstrasi.</div>';return}
+ const submitted=getReportDateTime(r);
+ const stages=["Laporan dikirim","Laporan diterima","Menunggu verifikasi","Dalam proses perbaikan","Selesai / siap digunakan"];
+ let active= r.status.includes("Selesai")?4:r.status.includes("Dalam")?3:r.status.includes("Menunggu")?2:1;
+ box.innerHTML=`<div style="border-top:1px solid var(--line);margin-top:15px;padding-top:18px"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><div class="help">NOMOR TIKET</div><h2 style="margin:5px 0">${r.ticket}</h2></div>${badge(r.status)}</div><div class="grid two-col" style="margin:16px 0"><div><div class="help">NAMA ALAT</div><b>${esc(r.equipment)}</b></div><div><div class="help">UNIT / RUANGAN</div><b>${esc(r.unit)}</b></div><div><div class="help">TANGGAL PELAPORAN</div><b>${esc(submitted.date)}</b></div><div><div class="help">JAM PELAPORAN</div><b>${esc(submitted.time)}</b></div><div><div class="help">JENIS KELUHAN</div><b>${esc(r.problem)}</b></div></div><h3>Perkembangan laporan</h3><div class="timeline">${stages.map((s,i)=>`<div class="timeline-item ${i<active?'done':i===active?'current':''}"><div class="timeline-dot"></div><div><b>${s}</b><p>${i===active?esc(r.note):i<active?'Tahap telah dilalui (simulasi)':'Menunggu tahapan sebelumnya'}</p></div></div>`).join("")}</div></div>`;
+}
+function renderTables(){
+ const total=reports.length,pending=reports.filter(r=>r.status==="Menunggu verifikasi").length,repair=reports.filter(r=>r.status==="Dalam perbaikan").length,done=reports.filter(r=>r.status.includes("Selesai")).length;
+ document.getElementById("homeTotal").textContent=total;document.getElementById("homePending").textContent=pending;document.getElementById("homeRepair").textContent=repair;document.getElementById("homeDone").textContent=done;
+ document.getElementById("userStats").innerHTML=[["Total laporan",total,"📋"],["Menunggu verifikasi",pending,"⏳"],["Dalam perbaikan",repair,"🔧"],["Selesai",done,"🎉"]].map(x=>`<div class="card stat"><div><div class="stat-label">${x[0]}</div><div class="stat-value">${x[1]}</div><div class="stat-note">Data demo</div></div><div class="stat-icon">${x[2]}</div></div>`).join("");
+ const rows=reports.map(r=>`<tr><td><b>${esc(r.ticket)}</b></td><td>${esc(formatReportDateTime(r))}</td><td>${esc(r.equipment)}</td><td>${esc(r.unit)}</td><td>${badge(r.status)}</td><td><button class="btn btn-light btn-sm" onclick="detail('${r.ticket}')">Detail</button></td></tr>`).join("");
+ document.getElementById("userTable").innerHTML=rows||emptyRow(6);
+ const q=(document.getElementById("historySearch")?.value||"").toLowerCase(),hf=document.getElementById("historyFilter")?.value||"";
+ const filtered=reports.filter(r=>(!q||[r.ticket,r.equipment,r.unit].join(" ").toLowerCase().includes(q))&&(!hf||r.status===hf));
+ document.getElementById("historyTable").innerHTML=filtered.map(r=>`<tr><td>${esc(r.ticket)}</td><td>${esc(formatReportDateTime(r))}</td><td>${esc(r.equipment)}</td><td>${esc(r.unit)}</td><td>${esc(r.problem)}</td><td>${badge(r.status)}</td></tr>`).join("")||emptyRow(6);
+ const mq=(document.getElementById("manageSearch")?.value||"").toLowerCase(),mf=document.getElementById("manageFilter")?.value||"";
+ const managed=reports.filter(r=>(!mq||[r.ticket,r.reporter,r.equipment,r.unit].join(" ").toLowerCase().includes(mq))&&(!mf||r.status===mf));
+ document.getElementById("manageTable").innerHTML=managed.map(r=>`<tr><td><b>${esc(r.ticket)}</b></td><td>${esc(r.reporter)}</td><td>${esc(r.equipment)}</td><td>${esc(r.unit)}</td><td>${esc(formatReportDateTime(r))}</td><td>${badge(r.status)}</td><td><button class="btn btn-primary btn-sm" onclick="detail('${r.ticket}')">Kelola</button></td></tr>`).join("")||emptyRow(7);
+ document.getElementById("ipsStats").innerHTML=[["Total laporan",total],["Laporan baru",pending],["Dalam perbaikan",repair],["Selesai",done]].map((x,i)=>`<div class="card stat"><div><div class="stat-label">${x[0]}</div><div class="stat-value">${x[1]}</div><div class="stat-note">Data demo</div></div><div class="stat-icon">${["📋","⏳","🔧","🎉"][i]}</div></div>`).join("");
+ const counts=[["Menunggu verifikasi",pending,"#d69e00"],["Dalam perbaikan",repair,"#1976d2"],["Selesai / siap digunakan",done,"#16a34a"],["Tidak dapat diperbaiki",reports.filter(r=>r.status==="Tidak dapat diperbaiki").length,"#dc2626"]];
+ document.getElementById("statusBars").innerHTML=counts.map(c=>`<div style="margin:15px 0"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:7px"><span>${c[0]}</span><b>${c[1]}</b></div><div style="height:8px;background:#edf2f7;border-radius:20px;overflow:hidden"><div style="height:100%;width:${total?Math.max(2,c[1]/total*100):0}%;background:${c[2]};border-radius:20px"></div></div></div>`).join("");
+ document.getElementById("ipsRecent").innerHTML=reports.slice(0,5).map(r=>`<tr><td>${esc(r.ticket)}</td><td>${esc(formatReportDateTime(r))}</td><td>${esc(r.reporter)}</td><td>${esc(r.unit)}</td><td>${esc(r.equipment)}</td><td>${badge(r.status)}</td><td><button class="btn btn-light btn-sm" onclick="detail('${r.ticket}')">Detail</button></td></tr>`).join("")||emptyRow(7);
+}
+function emptyRow(n){return `<tr><td colspan="${n}"><div class="empty">Belum ada data.</div></td></tr>`}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function detail(ticket){
+ const r=reports.find(x=>x.ticket===ticket);if(!r)return;
+ const submitted=getReportDateTime(r);
+ showModal("Detail & Pembaruan Laporan",`<div class="grid two-col"><div><div class="help">NOMOR TIKET</div><b>${esc(r.ticket)}</b></div><div><div class="help">TANGGAL PELAPORAN</div><b>${esc(submitted.date)}</b></div><div><div class="help">JAM PELAPORAN</div><b>${esc(submitted.time)}</b></div><div><div class="help">PELAPOR</div><b>${esc(r.reporter)}</b></div><div><div class="help">UNIT</div><b>${esc(r.unit)}</b></div><div><div class="help">ALAT</div><b>${esc(r.equipment)}</b></div><div><div class="help">KODE ASET</div><b>${esc(r.asset||"-")}</b></div></div><div class="field" style="margin-top:15px"><label>Keluhan</label><div class="notice">${esc(r.problem)} — ${esc(r.description)}</div></div><div class="field"><label>Status penanganan</label><select id="newStatus"><option ${r.status==="Menunggu verifikasi"?"selected":""}>Menunggu verifikasi</option><option ${r.status==="Dalam perbaikan"?"selected":""}>Dalam perbaikan</option><option ${r.status==="Selesai / siap digunakan"?"selected":""}>Selesai / siap digunakan</option><option ${r.status==="Tidak dapat diperbaiki"?"selected":""}>Tidak dapat diperbaiki</option></select></div><div class="field"><label>Catatan tindak lanjut</label><textarea id="newNote">${esc(r.note||"")}</textarea></div><button class="btn btn-primary" onclick="updateStatus('${r.ticket}')">Simpan pembaruan (demo)</button>`);
+}
+function updateStatus(ticket){const r=reports.find(x=>x.ticket===ticket);r.status=document.getElementById("newStatus").value;r.note=document.getElementById("newNote").value;r.owner="Petugas IPS (demo)";if(r.status.includes("Selesai"))confetti();r.updated=new Date().toLocaleString("id-ID");save();cloudUpdate(r);closeModal();renderTables();showToast("Status diperbarui dan dikirim ke cloud.");}
+function showModal(title,body){document.getElementById("modalTitle").textContent=title;document.getElementById("modalBody").innerHTML=body;document.getElementById("modal").classList.add("show")}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+function articleInfo(title,body){showModal(title,`<p class="subtitle">${esc(body)}</p>`)}
+
+/* ===== TEMA GEN Z: grafik, ticker, confetti ===== */
+function buildChart(){
+ const el=document.getElementById("heroChart");if(!el)return;
+ const W=440,H=210,L=34,R=12,T=14,B=30,M=12,days=["Sen","Sel","Rab","Kam","Jum","Sab","Min"],inc=[4,7,5,9,8,11,10],fin=[2,4,5,6,8,7,10],sum=a=>a.reduce((x,y)=>x+y,0),
+ x=i=>L+i*(W-L-R)/6,y=v=>H-B-v*(H-T-B)/M,
+ line=a=>a.map((v,i)=>{if(!i)return`M${x(0)},${y(v)}`;const c=(x(i-1)+x(i))/2;return`C${c},${y(a[i-1])} ${c},${y(v)} ${x(i)},${y(v)}`}).join(" "),
+ area=a=>`${line(a)} L${x(6)},${H-B} L${x(0)},${H-B} Z`,
+ grid=[0,4,8,12].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#ffffff22" stroke-dasharray="3 5"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end" fill="#b9acff" font-size="10">${v}</text>`).join(""),
+ lbl=days.map((d,i)=>`<text x="${x(i)}" y="${H-8}" text-anchor="middle" fill="#d6ceff" font-size="11">${d}</text>`).join(""),
+ dots=(a,c,n)=>a.map((v,i)=>`<circle class="pt" cx="${x(i)}" cy="${y(v)}" r="4.5" fill="#150a45" stroke="${c}" stroke-width="2.5"><title>${days[i]}: ${v} ${n}</title></circle>`).join(""),
+ grad=(id,c)=>`<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}" stop-opacity=".4"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></linearGradient>`,
+ ln=(a,c)=>`<path class="area" d="${area(a)}" fill="url(#g${c.slice(1)})"/><path class="draw" pathLength="1" d="${line(a)}" fill="none" stroke="${c}" stroke-width="3.5" stroke-linecap="round"/>`,
+ mv=(a,c)=>`<circle class="tr" r="6" fill="${c}"><animateMotion begin="2.8s" dur="6s" repeatCount="indefinite" path="${line(a)}"/></circle><circle class="pulse" cx="${x(6)}" cy="${y(a[6])}" r="5" fill="${c}"/>`;
+ el.innerHTML=`<div class="hc-top"><b>📈 Tren laporan 7 hari</b><span class="demo-tag">DATA DEMO</span></div><div class="hc-legend"><span><i style="background:#ffd166"></i>Laporan masuk (${sum(inc)})</span><span><i style="background:#5eead4"></i>Selesai (${sum(fin)})</span></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Grafik garis laporan masuk dan selesai selama 7 hari (data demonstrasi)"><defs>${grad("gffd166","#ffd166")}${grad("g5eead4","#5eead4")}</defs>${grid}${lbl}${ln(inc,"#ffd166")}${ln(fin,"#5eead4")}${dots(inc,"#ffd166","laporan masuk")}${dots(fin,"#5eead4","selesai")}${mv(inc,"#ffd166")}${mv(fin,"#5eead4")}</svg>`;
+}
+function renderTicker(){const t=document.getElementById("tickerTrack");if(!t)return;const em=s=>s.includes("Selesai")?"🎉":s.includes("Dalam")?"🔧":s.includes("Tidak")?"🚫":"⏳";const h=reports.slice(0,8).map(r=>`<span class="tk">${em(r.status)} ${esc(r.equipment)} di ${esc(r.unit)}: ${esc(r.status)}</span>`).join("").repeat(2);t.innerHTML=h+h}
+function countUp(){["homeTotal","homePending","homeRepair","homeDone"].forEach(id=>{const e=document.getElementById(id),to=+e.textContent,t0=performance.now(),step=n=>{const p=Math.min(1,(n-t0)/1100);e.textContent=Math.round(to*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(step)};requestAnimationFrame(step)})}
+function confetti(){const em=["🎉","✨","💜","🩵","⭐","🎊","💚"];for(let i=0;i<26;i++){const s=document.createElement("span");s.className="confetti";s.textContent=em[i%em.length];s.style.left=Math.random()*100+"vw";s.style.setProperty("--dx",(Math.random()*160-80)+"px");s.style.animationDuration=(1.6+Math.random()*1.4)+"s";s.style.fontSize=(16+Math.random()*16)+"px";document.body.appendChild(s);setTimeout(()=>s.remove(),3200)}}
+let _first=true;const _rt=renderTables;renderTables=function(){_rt();renderTicker();if(_first){_first=false;countUp()}};
+const _sp=showPage;showPage=function(n){_sp(n);if(n==="home")buildChart()};
+function fillNow(){const d=new Date(),p=n=>String(n).padStart(2,"0");document.getElementById("rdate").value=d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());document.getElementById("rtime").value=p(d.getHours())+":"+p(d.getMinutes())}
+document.getElementById("reportForm").addEventListener("reset",()=>setTimeout(fillNow,0));fillNow();
+buildChart();renderTables();
+/* ===== SINKRONISASI GOOGLE SHEETS ===== */
+const API="https://script.google.com/macros/s/AKfycbwaqbLYPoG_BAhPhNRJQTtlTTbRSvRsYfsTAKbiFQj3-v3cew8DDVmsMzAplhgkGAe0/exec";
+let pending=[];try{pending=JSON.parse(localStorage.getItem("sipantau_pending")||"[]")}catch(e){}
+let busy=0,cloudReady=false;
+function savePending(){try{localStorage.setItem("sipantau_pending",JSON.stringify(pending))}catch(e){}}
+function setSync(st,msg){const b=document.getElementById("syncBadge");if(!b)return;b.className="sync "+st;document.getElementById("syncIcon").textContent=st==="ok"?"☁️":st==="off"?"⚠️":"🔄";document.getElementById("syncText").textContent=msg||(st==="ok"?"Tersinkron ke cloud ☁️":st==="off"?"Offline, data disimpan lokal":"Menyinkronkan…");}
+async function apiPost(payload){busy++;try{const r=await fetch(API,{method:"POST",body:JSON.stringify(payload)});const j=await r.json();if(!j||!j.ok)throw new Error("gagal");return j}finally{busy--}}
+async function flushPending(){while(pending.length){try{await apiPost(pending[0]);pending.shift();savePending()}catch(e){return false}}return true}
+function cloudSend(payload){setSync("loading");apiPost(payload).then(()=>setSync("ok",pending.length?"Menunggu kirim ulang":undefined)).catch(()=>{pending.push(payload);savePending();setSync("off")})}
+function cloudCreate(item){cloudSend({action:"create",data:item})}
+function cloudUpdate(r){cloudSend({action:"update",ticket:r.ticket,data:{status:r.status,note:r.note,owner:r.owner,updated:r.updated}})}
+function normRow(o){const v=k=>o[k]==null?"":String(o[k]);let at="";if(o.reportedAt){const d=new Date(o.reportedAt);if(!isNaN(d))at=d.toISOString()}return{ticket:v("ticket"),reportedAt:at,reporter:v("reporter"),unit:v("unit"),contact:v("contact"),equipment:v("equipment"),asset:v("asset"),brand:v("brand"),type:v("type"),problem:v("problem"),description:v("description"),status:v("status")||"Menunggu verifikasi",note:v("note"),owner:v("owner"),updated:v("updated")}}
+async function loadCloud(silent){
+ if(busy)return;
+ if(!silent)setSync("loading");
+ try{
+  if(!(await flushPending()))throw new Error("kirim ulang gagal");
+  const r=await fetch(API);const data=await r.json();
+  if(!Array.isArray(data))throw new Error("format salah");
+  reports=data.filter(x=>x&&x.ticket).map(normRow).reverse();save();renderTables();
+  setSync("ok");
+  if(!cloudReady){cloudReady=true;countUp()}
+ }catch(e){setSync("off")}
+}
+setSync("loading");
+loadCloud();
+setInterval(()=>{if(!document.hidden)loadCloud(true)},30000);
+window.addEventListener("online",()=>loadCloud());
+</script>
+</body>
+</html>
